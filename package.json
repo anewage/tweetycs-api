@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "@bakjs/mongo": "latest",
-    "config": "latest",
-    "twit": "^2.2.11",
     "bak": "latest",
-    "joi": "latest"
+    "config": "latest",
+    "joi": "latest",
+    "twit": "^2.2.11"
   },
   "devDependencies": {
     "nodemon": "latest"
