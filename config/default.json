@@ -1,9 +1,0 @@
-{
-  "mongo": {
-    "connections": {
-      "default": {
-        "uri": "localhost"
-      }
-    }
-  }
-}
