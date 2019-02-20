@@ -9,6 +9,7 @@
   "dependencies": {
     "@bakjs/mongo": "latest",
     "bak": "latest",
+    "boom": "latest",
     "config": "latest",
     "joi": "latest",
     "twit": "^2.2.11"

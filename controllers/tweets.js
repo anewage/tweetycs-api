@@ -1,5 +1,6 @@
 const { Controller } = require('bak')
 const Twit = require('twit')
+const Boom = require('boom')
 const config = require('config')
 const { Tweet, Request } = require('../models')
 
@@ -12,9 +13,18 @@ export default class APIController extends Controller {
         this.get('/keywords', this.getKeywords)
     }
 
-    getTweet (request, h) {
-        let id = request.params.id
-        return {data: 'Tweet #' + id}
+    async getTweet (request, h) {
+        try {
+            let tweet = await Tweet.findOne({ 'id': request.params.id })
+            if (tweet) {
+                return {data: tweet}
+            } else {
+                return Boom.notFound()
+            }
+        } catch (e) {
+            console.log(e)
+            throw Boom.badRequest(e)
+        }
     }
 
     async getTweets (request, h) {
@@ -23,6 +33,7 @@ export default class APIController extends Controller {
             return {data: tweets}
         } catch (e) {
             console.log(e)
+            throw Boom.badRequest(e)
         }
     }
 
@@ -41,6 +52,7 @@ export default class APIController extends Controller {
             return {data: resp}
         } catch (e) {
             console.log(e)
+            Boom.badRequest(e)
         }
     }
 
