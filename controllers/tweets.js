@@ -1,4 +1,5 @@
-import { Controller } from 'bak'
+const { Controller } = require('bak')
+const { Tweet } = require('../models')
 
 export default class APIController extends Controller {
     init () {
@@ -13,8 +14,13 @@ export default class APIController extends Controller {
         return {data: 'Tweet #' + id}
     }
 
-    getTweets (request, h) {
-        return {data: 'Tweets...'}
+    async getTweets (request, h) {
+        try {
+            let tweets = await Tweet.find()
+            return {data: tweets}
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     getKeywords (request, h) {
