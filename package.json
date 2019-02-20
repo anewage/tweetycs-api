@@ -1,0 +1,19 @@
+{
+  "name": "tweet-sense-api",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bak dev",
+    "start": "bak start"
+  },
+  "dependencies": {
+    "@bakjs/mongo": "latest",
+    "config": "latest",
+    "twit": "^2.2.11",
+    "bak": "latest",
+    "joi": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  }
+}
