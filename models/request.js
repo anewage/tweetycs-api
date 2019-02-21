@@ -1,6 +1,8 @@
 const {Model, Schema} = require('@bakjs/mongo')
 
-
+/**
+ * A simple model to save the meta data of responses from Twitter's API
+ */
 class Request extends Model {
     static get $schema () {
         return {

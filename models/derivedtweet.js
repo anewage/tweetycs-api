@@ -1,6 +1,8 @@
 const {Model, Schema} = require('@bakjs/mongo')
 
-
+/**
+ * A Tweet with lots of derived attributes used in Public Health Visual Analytics Tool (PHVAT)
+ */
 class DerivedTweet extends Model {
     static get $schema () {
         return {

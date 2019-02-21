@@ -1,6 +1,8 @@
 const {Model, Schema} = require('@bakjs/mongo')
 
-
+/**
+ * A real Tweet from TWitter's API
+ */
 class Tweet extends Model {
     static get $schema () {
         return {
