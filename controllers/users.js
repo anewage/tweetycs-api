@@ -4,14 +4,21 @@ const { DerivedTweet } = require('../models')
 
 export default class UsersController extends Controller {
     init () {
-        this.get('/user/{username}', this.getUser)
-        this.get('/user/{username}/tweets', this.getTweetsByUser)
-        this.get('/users/aggregate', this.getUsersAggregate)
+        this.get('/user/{username}', this.getUser) // Get individual users from DB
+        this.get('/user/{username}/tweets', this.getTweetsByUser) // Get tweets by a specific user from DB
+        this.get('/users/aggregate', this.getUsersAggregate) // Get aggregated data for a specific user
     }
 
+    /**
+     * Get each individual user stored in the database by their `user_screen_name`
+     * @param request must include `username` as a parameter
+     * @param h
+     * @returns {Promise<*>}
+     */
     async getUser (request, h) {
         try {
             let tweet = await DerivedTweet.findOne({ 'user_screen_name': request.params.username })
+            // Filter the tweet to extract user related data
             const allowed_keys = ['user_id', 'user_screen_name', 'user_followers_count', 'user_friends_count', 'user_favourites_count', 'influence_ratio', 'user_statuses_count', 'user_verified', 'user_description', 'user_category']
             if (tweet) {
                 return {
@@ -27,6 +34,14 @@ export default class UsersController extends Controller {
         }
     }
 
+
+    /**
+     * Get batch of tweets written by a specific user determined by `user_screen_name`.
+     * Can limit the output by including a `limit` in the query.
+     * @param request must include `username` as a parameter
+     * @param h
+     * @returns {Promise<{data: *}>}
+     */
     async getTweetsByUser (request, h) {
         try {
             let username = request.params.username
@@ -39,6 +54,14 @@ export default class UsersController extends Controller {
         }
     }
 
+
+    /**
+     * Get aggregated results from tweets based on their users.
+     * Can limit the output by including a `limit` in the query.
+     * @param request
+     * @param h
+     * @returns {Promise<{data: *}>}
+     */
     async getUsersAggregate (request, h) {
         try {
             let limit =  parseInt(request.query.limit) || 100
