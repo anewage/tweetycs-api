@@ -3,6 +3,10 @@ const Boom = require('boom')
 const { DerivedTweet } = require('../models')
 
 export default class UsersController extends Controller {
+
+    /**
+     * Includes the routings for this controller
+     */
     init () {
         this.get('/user/{username}', this.getUser) // Get individual users from DB
         this.get('/user/{username}/tweets', this.getTweetsByUser) // Get tweets by a specific user from DB
