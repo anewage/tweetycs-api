@@ -5,6 +5,7 @@ module.exports = {
         './controllers/api',
         './controllers/clusters',
         './controllers/tweets',
+        './controllers/twit',
     ],
     registrations: [
         '@bakjs/mongo'
