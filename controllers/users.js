@@ -13,20 +13,14 @@ export default class UsersController extends Controller {
      * Get each individual user stored in the database by their `user_screen_name`
      * @param request must include `username` as a parameter
      * @param h
-     * @returns {Promise<*>}
+     * @returns {Promise<{data: *}>}
      */
     async getUser (request, h) {
         try {
             let tweet = await DerivedTweet.findOne({ 'user_screen_name': request.params.username })
             // Filter the tweet to extract user related data
             const allowed_keys = ['user_id', 'user_screen_name', 'user_followers_count', 'user_friends_count', 'user_favourites_count', 'influence_ratio', 'user_statuses_count', 'user_verified', 'user_description', 'user_category']
-            if (tweet) {
-                return {
-                    data: allowed_keys.reduce((obj, key) => ({ ...obj, [key]: tweet[key]}), {})
-                }
-            } else {
-                return Boom.notFound()
-            }
+            return {data: allowed_keys.reduce((obj, key) => ({ ...obj, [key]: tweet[key]}), {})}
 
         } catch (e) {
             console.log(e)
