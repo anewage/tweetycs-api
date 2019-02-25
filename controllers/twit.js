@@ -12,6 +12,7 @@ export default class TwitController extends Controller {
     init () {
         this.$twit = new Twit(config.get('twit'))
         this.get('/twit/users/lookup', this.lookupUser)
+        this.get('/twit/stream', this.stream)
         this.post('/twit/fetch', this.fetchTweets)
     }
 
@@ -33,7 +34,6 @@ export default class TwitController extends Controller {
                     return result.data
                 })
             return {data: real_user}
-
         } catch (e) {
             console.log(e)
             throw Boom.badRequest(e)
@@ -68,5 +68,18 @@ export default class TwitController extends Controller {
             console.log(e)
             Boom.badRequest(e)
         }
+    }
+
+    async stream (request, h) {
+        var st = this.$twit.stream('statuses/filter', {track: ['cancer', 'myeloma', 'lymphoma', 'leukemia', 'laryngeal']})
+        st.on('tweet', function (tweet) {
+            console.log("got it!")
+            let toSave = new Tweet(tweet)
+            toSave.save()
+        })
+        st.on('message', function (msg) {
+            console.log('>>>> Message Received: ', msg)
+        })
+        return 'OK'
     }
 }

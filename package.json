@@ -7,12 +7,14 @@
     "start": "bak start"
   },
   "dependencies": {
+    "axios": "latest",
     "@bakjs/mongo": "latest",
     "bak": "latest",
     "boom": "latest",
     "config": "latest",
     "joi": "latest",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "twitter-stream-channels": "latest"
   },
   "devDependencies": {
     "nodemon": "latest"
