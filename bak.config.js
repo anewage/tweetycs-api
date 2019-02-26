@@ -3,7 +3,7 @@ module.exports = {
     prefix: '/api',
     routes: [
         './controllers/api',
-        './controllers/clusters',
+        './controllers/meta',
         './controllers/tweets',
         './controllers/users',
         './controllers/twit',
