@@ -6,6 +6,8 @@ Please refer to [this link](https://github.com/lorenwest/node-config/wiki/Config
 
 # Deploying
 ```bash
+yarn # npm install -> Install the 
+
 yarn dev # For development
 
 yarn start # For production
