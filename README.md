@@ -22,6 +22,8 @@ vim config/local.js # Edit the config file as you wish
 ```
 Now you can deploy the API:
 ```bash
+yarn # npm install -> Install the 
+
 yarn dev # For development
 
 yarn start # For production
