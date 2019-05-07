@@ -1,7 +1,7 @@
 const {Model, Schema} = require('@bakjs/mongo')
 
 /**
- * A real Tweet from TWitter's API
+ * A real Tweet from Twitter's API
  */
 class Tweet extends Model {
     static get $schema () {
@@ -9,6 +9,7 @@ class Tweet extends Model {
             id: String,
             id_str: String,
             text: String,
+            analysis: Object,
             truncated: Boolean,
             entities: Object,
             metadata: Object,

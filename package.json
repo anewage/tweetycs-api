@@ -4,15 +4,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bak dev",
-    "start": "bak start"
+    "start": "bak start",
+    "dev_fetch": "node main.js; bak dev"
   },
   "dependencies": {
-    "axios": "latest",
     "@bakjs/mongo": "latest",
+    "axios": "latest",
     "bak": "latest",
     "boom": "latest",
     "config": "latest",
+    "http": "latest",
+    "ibm-watson": "^4.1.0",
     "joi": "latest",
+    "socket.io": "latest",
+    "socket.io-client": "latest",
     "twit": "^2.2.11",
     "twitter-stream-channels": "latest"
   },

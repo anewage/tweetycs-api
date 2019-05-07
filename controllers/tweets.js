@@ -1,6 +1,6 @@
 const { Controller } = require('bak')
 const Boom = require('boom')
-const { DerivedTweet } = require('../models')
+const { DerivedTweet, Tweet } = require('../models')
 
 export default class TweetsController extends Controller {
 
@@ -9,6 +9,7 @@ export default class TweetsController extends Controller {
      */
     init () {
         this.get('/tweets', this.getTweets)
+        this.post('/tweet/save', this.saveTweet)
     }
 
 
@@ -25,6 +26,16 @@ export default class TweetsController extends Controller {
         } catch (e) {
             console.log(e)
             throw Boom.badRequest(e)
+        }
+    }
+
+    async saveTweet (request, h) {
+        try {
+            var tweet = new Tweet(request.payload.tweet)
+            await tweet.save()
+            return 'OK'
+        } catch (e) {
+            Boom.badRequest()
         }
     }
 }
