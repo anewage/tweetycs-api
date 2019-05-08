@@ -50,6 +50,7 @@ function pingPong(data) {
 }
 
 function testConnect(data) {
+    console.log('Client connected!!')
     this.emit('server_response', {data: 'Connected', 'count': 0})
 }
 
@@ -153,13 +154,7 @@ async function processTweet(tweet) {
                 keywords: true,
                 entities: true
             },
-            sentiment: {
-                targets: [
-                    'disease',
-                    'health',
-                    'mortality'
-                ]
-            },
+            sentiment: true,
         },
     };
     tweet.analysis = await naturalLanguageUnderstanding.analyze(analyzeParams)

@@ -11,9 +11,11 @@ export default class TwitController extends Controller {
      */
     init () {
         this.$twit = new Twit(config.get('twit'))
+        this.$connection = null
         this.get('/twit/users/lookup', this.lookupUser)
-        this.get('/twit/stream', this.stream)
+        this.get('/twit/stream', this.fetchStream)
         this.post('/twit/fetch', this.fetchTweets)
+        this.post('/twit/fetch/close', this.closeConnection)
     }
 
 
@@ -70,16 +72,22 @@ export default class TwitController extends Controller {
         }
     }
 
-    async stream (request, h) {
-        var st = this.$twit.stream('statuses/filter', {track: ['cancer', 'myeloma', 'lymphoma', 'leukemia', 'laryngeal']})
-        st.on('tweet', function (tweet) {
+    async fetchStream (request, h) {
+        var keywords = config.get('keywords')
+        this.$connection = this.$twit.stream('statuses/filter', {track: keywords})
+        this.$connection.on('tweet', function (tweet) {
             console.log("got it!")
             let toSave = new Tweet(tweet)
-            toSave.save()
+            preProcess(toSave)
+            // toSave.save()
         })
-        st.on('message', function (msg) {
+        this.$connection.on('message', function (msg) {
             console.log('>>>> Message Received: ', msg)
         })
         return 'OK'
+    }
+
+    async closeConnection (request, h) {
+        this.$connection.stop()
     }
 }
