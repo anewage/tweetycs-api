@@ -1,3 +1,4 @@
+const { PreProcessor } = require('./modules')
 const axios = require('axios')
 const { Tweet } = require('./models')
 const config = require('config')
@@ -119,11 +120,14 @@ function stopFetching() {
 
 async function processTweet(tweet) {
     // Pre-process the tweet using the Flask deployment
-    tweet.text = await axios.post('http://localhost:5000/preprocess/', {
-        tweet: tweet.text
-    }).then(function (response){
-        return response.data
-    })
+    tweet.text = PreProcessor.preprocessText(tweet.text)
+    console.log(tweet.text)
+    // tweet.text = await axios.post('http://localhost:5000/preprocess/', {
+    //     tweet: tweet.text
+    // }).then(function (response){
+    //     return response.data
+    // })
+
     // Analyze the tweet (NLP PART)
     // TODO: discard non-english tweets
     const analyzeParams = {
