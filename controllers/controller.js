@@ -11,7 +11,7 @@ class EventController {
      * Routes that the controller responds to
      */
     routes () {
-
+        
     }
 
 }
