@@ -43,12 +43,18 @@ class ClientController extends EventController {
             this.emit('server_response', {data: 'Error! Already fetching the stream...'})
             return
         }
-        this.fetching = true
-        if (this.stream)
-            this.stream.start()
-        else
-            this.stream = T.stream('statuses/filter', {track: keywords, language: 'en'}).on('tweet', tweet => this.processTweet.call(this, tweet))
-        this.emit('server_response', {data: 'Fetch started...'})
+        try {
+            this.fetching = true
+            if (this.stream)
+                this.stream.start()
+            else
+                this.stream = T.stream('statuses/filter', {track: keywords, language: 'en'})
+                    .on('tweet', tweet => this.processTweet.call(this, tweet))
+            this.emit('server_response', {data: 'Fetch started...'})
+        } catch (e) {
+            this.fetching = false
+            this.emit('server_response', {data: 'Error! Something is wrong with the server...'})
+        }
     }
 
     stopFetching() {
