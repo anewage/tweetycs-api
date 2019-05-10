@@ -1,7 +1,7 @@
 /**
  * Generic Controller
  */
-class Controller {
+class EventController {
 
     constructor(socket) {
         this.socket = socket
@@ -16,4 +16,4 @@ class Controller {
 
 }
 
-module.exports = Controller
+module.exports = EventController

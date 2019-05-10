@@ -1,8 +1,8 @@
-const Controller = require('./controller')
+const EventController = require('./controller')
 /**
  * Connection Controller
  */
-class ConnectionController extends Controller{
+class ConnectionController extends EventController{
 
     /**
      * Routes that the controller responds to

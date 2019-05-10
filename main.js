@@ -3,6 +3,7 @@ const axios = require('axios')
 const { Tweet } = require('./models')
 const config = require('config')
 const nlp = require('./modules/nlp')
+const routeRegistrar = require('./controllers')
 var Twit = require('twit')
 var T = new Twit(config.get('twit'))
 var keywords = config.get('keywords')
@@ -24,20 +25,7 @@ function handler (req, res) {
             res.end(data);
         });
 }
-const nameSpace = io.of('/test').on('connection', (socket) => {
-    socket.emit('server_response', {data: 'Connected', 'count': 0})
-    socket.on('client_ping', data => pingPong.call(socket, data))
-    socket.on('connect', data => testConnect.call(socket, data))
-    socket.on('disconnect_request', data => disconnectRequest.call(socket, data))
-    socket.on('disconnect', data => testDisconnect.call(socket, data))
-    socket.on('client_event', data => testMessage.call(socket, data))
-    socket.on('client_broadcast_event', data => testBroadcastMessage.call(socket, data))
-    socket.on('client_room_event', data => sendRoomMessage.call(socket, data))
-    socket.on('join', data => join.call(socket, data))
-    socket.on('leave', data => leave.call(socket, data))
-    socket.on('fetch_stream', data => fetchStream.call(socket, data))
-    socket.on('stop_fetch', data => stopFetching.call(socket, data))
-})
+const nameSpace = io.of('/test').on('connection', routeRegistrar)
 
 // `this` refers to the socket
 function pingPong(data) {
