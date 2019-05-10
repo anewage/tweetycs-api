@@ -1,6 +1,5 @@
 module.exports = {
-
-    replacements: [
+    rules: [
         // URLS
         {
             regExp: /((www\.[\S]+)|(http[\S]*))/g,
@@ -44,15 +43,10 @@ module.exports = {
             replacement: ''
         },
     ],
-
-    /**
-     *
-     * @param text String
-     */
-    preprocessText: function (text) {
+    process: function(dataItem) {
         // Convert to lower case
-        text = text.toLowerCase()
-        for (let opt of this.replacements) {
+        let text = dataItem.toLowerCase()
+        for (let opt of this.rules) {
             text = text.replace(opt.regExp, opt.replacement)
         }
         return text
