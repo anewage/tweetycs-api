@@ -1,5 +1,6 @@
 /**
  * Generic Controller
+ * DO NOT PUT ANY EXTRA CODE IN THIS FILE
  */
 class EventController {
 
@@ -11,7 +12,7 @@ class EventController {
      * Routes that the controller responds to
      */
     routes () {
-        
+
     }
 
 }

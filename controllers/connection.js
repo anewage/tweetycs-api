@@ -22,7 +22,14 @@ class ConnectionController extends EventController{
 
         // Test disconnection
         this.socket.on('disconnect', data => { this.testDisconnect(data) })
+
+        // Joining a room
+        this.socket.on('join', data => { this.join(data) })
+
+        // Leaving a room
+        this.socket.on('leave', data => { this.leave(data) })
     }
+
 
     testConnect(data) {
         console.log('Client connected!!')
@@ -40,6 +47,24 @@ class ConnectionController extends EventController{
 
     testDisconnect(data) {
         return this.socket.connected
+    }
+
+    join(message) {
+        this.socket.join(message.room, data => {
+            let rooms = Object.keys(this.rooms);
+            // broadcast to everyone in the room
+            this.to(message.room).emit('server_response', {data: 'a new user has joined the room'});
+            this.emit('server_response', {data: 'In rooms: ' + rooms , rooms: rooms})
+        })
+    }
+
+    leave(message) {
+        this.socket.leave(message.room, data => {
+            let rooms = Object.keys(this.rooms);
+            // broadcast to everyone in the room
+            this.to(message.room).emit('server_response', {data: 'a user has left the room'});
+            this.emit('server_response', {data: 'In rooms: ' + rooms , rooms: rooms})
+        })
     }
 
 }
