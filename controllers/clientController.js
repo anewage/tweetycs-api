@@ -1,7 +1,8 @@
 const EventController = require('./controller')
-var Twit = require('twit')
-var T = new Twit(config.get('twit'))
-var keywords = config.get('keywords')
+const config = require('config')
+const keywords = config.get('keywords')
+let Twit = require('twit')
+let T = new Twit(config.get('twit'))
 /**
  * Generic Controller
  */
@@ -38,9 +39,10 @@ class ClientController extends EventController {
         this.socket.to(message.room).emit('server_response', {data: message.data})
     }
 
-    fetchStream() {
+    fetchStream(data) {
+        console.log("hello!")
         if (this.fetching){
-            this.emit('server_response', {data: 'Error! Already fetching the stream...'})
+            this.socket.emit('server_response', {data: 'Error! Already fetching the stream...'})
             return
         }
         try {
@@ -49,27 +51,27 @@ class ClientController extends EventController {
                 this.stream.start()
             else
                 this.stream = T.stream('statuses/filter', {track: keywords, language: 'en'})
-                    .on('tweet', tweet => this.processTweet.call(this, tweet))
-            this.emit('server_response', {data: 'Fetch started...'})
+                    .on('tweet', tweet => this.processTweet(tweet))
+            this.socket.emit('server_response', {data: 'Fetch started...'})
         } catch (e) {
             this.fetching = false
-            this.emit('server_response', {data: 'Error! Something is wrong with the server...'})
+            this.socket.emit('server_response', {data: 'Error! Something is wrong with the server...'})
         }
     }
 
     stopFetching() {
         if (!this.fetching){
-            this.emit('server_response', {data: 'Error! Currently, no stream is being fetched.'})
+            this.socket.emit('server_response', {data: 'Error! Currently, no stream is being fetched.'})
             return
         }
         this.stream.stop()
         this.fetching = false
-        this.emit('server_response', {data: 'Fetch stopped.'})
+        this.socket.emit('server_response', {data: 'Fetch stopped.'})
     }
 
     async processTweet(tweet) {
         // Pre-process the tweet using the Flask deployment
-        tweet.text = PreProcessor.preprocessText(tweet.text)
+        // tweet.text = PreProcessor.preprocessText(tweet.text)
         console.log(tweet.text)
         // tweet.text = await axios.post('http://localhost:5000/preprocess/', {
         //     tweet: tweet.text
@@ -79,16 +81,16 @@ class ClientController extends EventController {
 
         // Analyze the tweet (NLP PART)
         // TODO: discard non-english tweets
-        let result = await nlp.analyzeText(tweet.text)
-        tweet['analysis'] = result
-        // Save the tweet --- pass it to Bakjs for saving
-        axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})
-            .then(response => {
-                this.emit('server_response', {data: 'Tweet: ' + tweet.text})
-            })
-            .catch(err => {
-                console.log('error:');
-            });
+        // let result = await nlp.analyzeText(tweet.text)
+        // tweet['analysis'] = result
+        // // Save the tweet --- pass it to Bakjs for saving
+        // axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})
+        //     .then(response => {
+        //         this.emit('server_response', {data: 'Tweet: ' + tweet.text})
+        //     })
+        //     .catch(err => {
+        //         console.log('error:');
+        //     });
     }
 
 
