@@ -2,7 +2,7 @@ const EventController = require('./controller')
 /**
  * Connection Controller
  */
-class ConnectionController extends EventController{
+class Connectioncontroller extends EventController{
 
     /**
      * Routes that the controller responds to
@@ -69,4 +69,4 @@ class ConnectionController extends EventController{
 
 }
 
-module.exports = ConnectionController
+module.exports = Connectioncontroller

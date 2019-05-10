@@ -6,7 +6,7 @@ let T = new Twit(config.get('twit'))
 /**
  * Generic Controller
  */
-class ClientController extends EventController {
+class Clientcontroller extends EventController {
 
     constructor(socket) {
         super(socket);
@@ -96,4 +96,4 @@ class ClientController extends EventController {
 
 }
 
-module.exports = ClientController
+module.exports = Clientcontroller

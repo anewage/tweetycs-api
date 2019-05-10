@@ -1,6 +1,6 @@
 const EventController = require('./controller')
-const ConnectionController = require('./connectionController')
-const ClientController = require('./clientController')
+const ConnectionController = require('./connectioncontroller')
+const ClientController = require('./clientcontroller')
 module.exports = {
     EventController,
     ConnectionController,
