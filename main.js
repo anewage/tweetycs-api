@@ -1,5 +1,6 @@
 const config = require('config')
 const routeRegistrar = require('./lib/routeregistrar')
+const streamRegistrar = require('./lib/streamregistrar')
 
 function handler (req, res) {
     fs.readFile(__dirname + '/index.html',
@@ -24,3 +25,6 @@ app.listen(PORT);
 // Listen to events on the specified namespace
 let NAMESPACE = config.namespace || '/'
 const nameSpace = io.of(NAMESPACE).on('connection', routeRegistrar)
+
+// Start consuming the streams
+streamRegistrar()
