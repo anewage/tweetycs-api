@@ -2,13 +2,7 @@ const { PreProcessor } = require('./modules')
 const axios = require('axios')
 const { Tweet } = require('./models')
 const config = require('config')
-const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-
-const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
-    version: '2019-04-02',
-    iam_apikey: config.IBM.api_key,
-    url: config.IBM.url,
-});
+const nlp = require('./modules/nlp')
 var Twit = require('twit')
 var T = new Twit(config.get('twit'))
 var keywords = config.get('keywords')
@@ -130,44 +124,8 @@ async function processTweet(tweet) {
 
     // Analyze the tweet (NLP PART)
     // TODO: discard non-english tweets
-    const analyzeParams = {
-        text: tweet.text,
-        features: {
-            concepts: {
-                limit: 3
-            },
-            emotion: {
-                targets: [
-                    'disease',
-                    'health',
-                    'mortality'
-                ]
-            },
-            entities: {
-                emotion: true,
-                sentiment: true,
-                limit: 2,
-            },
-            keywords: {
-                emotion: true,
-                sentiment: true,
-                limit: 3,
-            },
-            semantic_roles: {
-                limit: 10,
-                keywords: true,
-                entities: true
-            },
-            sentiment: true,
-        },
-    };
-    tweet.analysis = await naturalLanguageUnderstanding.analyze(analyzeParams)
-        .then(analysisResults => {
-            return analysisResults
-        })
-        .catch(err => {
-            console.log('error:', err);
-        });
+    let result = await nlp.analyzeText(tweet.text)
+    tweet['analysis'] = result
     // Save the tweet --- pass it to Bakjs for saving
     axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})
         .then(response => {

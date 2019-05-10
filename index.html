@@ -47,7 +47,7 @@
                     dc.redrawAll();
                 }
                 var tweet = JSON.parse(msg.tweet)
-                //xfilter.add([tweet])
+                xfilter.add([tweet])
                 $('#log').append('<br>' + $('<div/>').text('Received #' + msg.number + ': ' + tweet.text.substr(0, 40) + '... SENTIMENT: ' + tweet.sentiment).html());
             });
             // Interval function that tests message latency by sending a "ping"
