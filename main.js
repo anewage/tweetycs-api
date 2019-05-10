@@ -1,5 +1,5 @@
 const config = require('config')
-const routeRegistrar = require('./modules/routeregistrar')
+const routeRegistrar = require('./lib/routeregistrar')
 
 function handler (req, res) {
     fs.readFile(__dirname + '/index.html',
