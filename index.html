@@ -61,6 +61,8 @@
                     socket.emit('client_ping');
                     console.log('ping sent')
                 }
+                else
+                    $('#ping-pong').text('∞');
             }, 1000);
             // Handler for the "pong" message. When the pong is received, the
             // time from the ping is stored, and the average of the last 30
