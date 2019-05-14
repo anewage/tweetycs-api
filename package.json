@@ -10,6 +10,7 @@
     "config": "latest",
     "http": "latest",
     "ibm-watson": "^4.1.0",
+    "natural": "^0.6.3",
     "socket.io": "latest",
     "socket.io-client": "latest",
     "twit": "^2.2.11"
