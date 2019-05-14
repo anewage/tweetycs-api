@@ -1,6 +1,6 @@
 const BaseConsumer = require('./baseconsumer')
 const { preprocess } = require('../modules/preprocessors')
-// const nlp = require('../modules/nlp')
+const nlp = require('../modules/nlp')
 const config = require('config')
 const keywords = config.get('keywords')
 let Twit = require('twit')
@@ -30,7 +30,7 @@ class TwitterConsumer extends BaseConsumer {
         tweet.text = preprocess(tweet.text)[0]
 
         // Analyze the tweet (NLP PART)
-        // tweet['analysis'] = await nlp.analyzeText(tweet.text)
+        tweet['analysis'] = await nlp.analyzeText(tweet.text)
 
         // Save the tweet --- pass it to Bakjs for saving
         // axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})

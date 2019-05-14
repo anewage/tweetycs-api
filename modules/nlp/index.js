@@ -1,7 +1,7 @@
 const IBMAdapter = require('./IBM')
 
 let adapters = []
-adapters.push(new IBMAdapter('IBM Natural Language Understanding API'))
+adapters.push(new IBMAdapter('IBM Natural Language Understanding API', 'ibm'))
 
 async function analyzeText(text) {
     let res = []

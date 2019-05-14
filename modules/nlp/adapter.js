@@ -1,7 +1,8 @@
 // Generic Adapter for different NLP APIs
 class Adapter {
-    constructor (title) {
+    constructor (title, id) {
         this.title = title
+        this.id = id
     }
     // Implement on your own
     async analyze (text) {}
@@ -10,6 +11,7 @@ class Adapter {
     async getResponse(text) {
         let resp = await this.analyze(text)
         return {
+            id: this.id,
             title: this.title,
             result: resp
         }
