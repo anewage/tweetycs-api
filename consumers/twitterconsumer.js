@@ -1,5 +1,6 @@
 const BaseConsumer = require('./baseconsumer')
-const { sample1Processor } = require('../modules/preprocessor')
+const { preprocess } = require('../modules/preprocessors')
+// const nlp = require('../modules/nlp')
 const config = require('config')
 const keywords = config.get('keywords')
 let Twit = require('twit')
@@ -22,24 +23,16 @@ class TwitterConsumer extends BaseConsumer {
         return true
     }
 
-    handleTweet(tweet) {
-        // TODO
+    async handleTweet(tweet) {
         // Pre-process the tweet
-        if(tweet.extended_tweet)
+        if (tweet.extended_tweet)
             tweet.text = tweet.extended_tweet.full_text
-        // tweet.text = sample1Processor.process(tweet.text)
-        console.log(tweet.truncated,  ' ---- ' , tweet.text)
-        // tweet.text = await axios.post('http://localhost:5000/preprocess/', {
-        //     tweet: tweet.text
-        // }).then(function (response){
-        //     return response.data
-        // })
+        tweet.text = preprocess(tweet.text)[0]
 
         // Analyze the tweet (NLP PART)
-        // TODO: discard non-english tweets
-        // let result = await nlp.analyzeText(tweet.text)
-        // tweet['analysis'] = result
-        // // Save the tweet --- pass it to Bakjs for saving
+        // tweet['analysis'] = await nlp.analyzeText(tweet.text)
+
+        // Save the tweet --- pass it to Bakjs for saving
         // axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})
         //     .then(response => {
         //         this.emit('server_response', {data: 'Tweet: ' + tweet.text})
