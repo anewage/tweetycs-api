@@ -1,4 +1,4 @@
-const preprocessor = require('../modules/preprocessor')
+const preprocessor = require('../modules/preprocessors')
 
 // Pre-processing
 test('Pre-processing a text', () => {

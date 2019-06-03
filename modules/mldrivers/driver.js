@@ -1,15 +1,15 @@
-// Generic Adapter for different NLP APIs
-class Adapter {
+// Generic Driver for different ML algorithms
+class Driver {
     constructor (title, id) {
         this.title = title
         this.id = id
     }
     // Implement on your own
-    async analyze (text) {}
+    async predict (item) {}
 
     // Driver Function
-    async getResponse(text) {
-        let resp = await this.analyze(text)
+    async getResponse(item) {
+        let resp = await this.predict(item)
         return {
             id: this.id,
             title: this.title,
@@ -18,4 +18,4 @@ class Adapter {
     }
 }
 
-module.exports = Adapter
+module.exports = Driver

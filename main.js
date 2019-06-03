@@ -1,17 +1,7 @@
-const { PreProcessor } = require('./modules')
-const axios = require('axios')
-const { Tweet } = require('./models')
 const config = require('config')
-const nlp = require('./modules/nlp')
-var Twit = require('twit')
-var T = new Twit(config.get('twit'))
-var keywords = config.get('keywords')
-var fs = require('fs');
-var app = require('http').createServer(handler)
-var io = require('socket.io')(app);
-var fetching = false;
-var stream = null;
-app.listen(2000);
+const routeRegistrar = require('./lib/routeregistrar')
+const streamRegistrar = require('./lib/streamregistrar')
+
 function handler (req, res) {
     fs.readFile(__dirname + '/index.html',
         function (err, data) {
@@ -24,115 +14,21 @@ function handler (req, res) {
             res.end(data);
         });
 }
-const nameSpace = io.of('/test').on('connection', (socket) => {
-    socket.emit('server_response', {data: 'Connected', 'count': 0})
-    socket.on('client_ping', data => pingPong.call(socket, data))
-    socket.on('connect', data => testConnect.call(socket, data))
-    socket.on('disconnect_request', data => disconnectRequest.call(socket, data))
-    socket.on('disconnect', data => testDisconnect.call(socket, data))
-    socket.on('client_event', data => testMessage.call(socket, data))
-    socket.on('client_broadcast_event', data => testBroadcastMessage.call(socket, data))
-    socket.on('client_room_event', data => sendRoomMessage.call(socket, data))
-    socket.on('join', data => join.call(socket, data))
-    socket.on('leave', data => leave.call(socket, data))
-    socket.on('fetch_stream', data => fetchStream.call(socket, data))
-    socket.on('stop_fetch', data => stopFetching.call(socket, data))
-})
+let fs = require('fs')
+let app = require('http').createServer(handler)
+let io = require('socket.io')(app);
 
-// `this` refers to the socket
-function pingPong(data) {
-    this.emit('server_pong')
-}
+// Start the server on the specified port
+let PORT = config.port || 2000
+app.listen(PORT);
 
-function testConnect(data) {
-    console.log('Client connected!!')
-    this.emit('server_response', {data: 'Connected', 'count': 0})
-}
+// Listen to events on the specified namespace
+let NAMESPACE = config.namespace || '/'
+const nameSpace = io.of(NAMESPACE).on('connection', routeRegistrar)
 
-function testDisconnect(data) {
-    console.log('Client disconnected!')
-}
+// Start consuming the streams
+streamRegistrar()
 
-function disconnectRequest(data) {
-    this.emit('server_response', {data: 'Disconnected!'})
-    this.disconnect(true)
-}
 
-function sendRoomMessage(message) {
-    this.to(message.room).emit('server_response', {data: message.data})
-}
-
-function testMessage(message) {
-    this.emit('server_response', {data: message.data})
-}
-
-function testBroadcastMessage(message) {
-    this.broadcast.emit('server_response', {data: message.data})
-    console.log('BROADCAST: ', message.data )
-}
-
-function join(message) {
-    this.join(message.room, data => {
-        let rooms = Object.keys(this.rooms);
-        // broadcast to everyone in the room
-        this.to(message.room).emit('server_response', {data: 'a new user has joined the room'});
-        this.emit('server_response', {data: 'In rooms: ' + rooms , rooms: rooms})
-    })
-}
-
-function leave(message) {
-    this.leave(message.room, data => {
-        let rooms = Object.keys(this.rooms);
-        // broadcast to everyone in the room
-        this.to(message.room).emit('server_response', {data: 'a user has left the room'});
-        this.emit('server_response', {data: 'In rooms: ' + rooms , rooms: rooms})
-    })
-}
-
-function fetchStream() {
-    if (fetching){
-        this.emit('server_response', {data: 'Error! Already fetching the stream...'})
-        return
-    }
-    fetching = true
-    if (stream)
-        stream.start()
-    else
-        stream = T.stream('statuses/filter', {track: keywords, language: 'en'}).on('tweet', tweet => processTweet.call(this, tweet))
-    this.emit('server_response', {data: 'Fetch started...'})
-}
-
-function stopFetching() {
-    if (!fetching){
-        this.emit('server_response', {data: 'Error! Currently, no stream is being fetched.'})
-        return
-    }
-    stream.stop()
-    fetching = false
-    this.emit('server_response', {data: 'Fetch stopped.'})
-}
-
-async function processTweet(tweet) {
-    // Pre-process the tweet using the Flask deployment
-    tweet.text = PreProcessor.preprocessText(tweet.text)
-    console.log(tweet.text)
-    // tweet.text = await axios.post('http://localhost:5000/preprocess/', {
-    //     tweet: tweet.text
-    // }).then(function (response){
-    //     return response.data
-    // })
-
-    // Analyze the tweet (NLP PART)
-    // TODO: discard non-english tweets
-    let result = await nlp.analyzeText(tweet.text)
-    tweet['analysis'] = result
-    // Save the tweet --- pass it to Bakjs for saving
-    axios.post('http://localhost:3000/api/tweet/save', {tweet: tweet})
-        .then(response => {
-            this.emit('server_response', {data: 'Tweet: ' + tweet.text})
-        })
-        .catch(err => {
-            console.log('error:');
-        });
-}
-
+module.exports.app = app
+module.exports.socket = nameSpace

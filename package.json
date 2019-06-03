@@ -3,27 +3,23 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
-    "dev": "bak dev",
-    "start": "bak start",
-    "dev_fetch": "node main.js; bak dev"
+    "start": "node main.js",
+    "bak_dev": "bak dev",
+    "bak": "bak start"
   },
   "dependencies": {
-    "@bakjs/mongo": "latest",
+    "@bakjs/mongo": "^4.5.3",
     "axios": "latest",
-    "bak": "latest",
-    "boom": "latest",
+    "bak": "^4.7.6",
     "config": "latest",
     "http": "latest",
     "ibm-watson": "^4.1.0",
-    "joi": "latest",
+    "natural": "^0.6.3",
     "socket.io": "latest",
     "socket.io-client": "latest",
-    "twit": "^2.2.11",
-    "twitter-stream-channels": "latest"
+    "twit": "^2.2.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
     "nodemon": "latest"
   }
