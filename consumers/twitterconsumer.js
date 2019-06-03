@@ -35,6 +35,9 @@ class TwitterConsumer extends BaseConsumer {
         // Analyze the tweet (NLP PART)
         tweet['analysis'] = await nlp.analyzeText(tweet.text)
 
+        // Predict the labels
+        tweet['labels'] = {}
+
         // Save the tweet --- pass it to Bakjs for saving
         axios.post(config.get('bakjs'), {tweet: tweet})
             .then(response => {
