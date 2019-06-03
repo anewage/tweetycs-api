@@ -25,7 +25,7 @@
             // Connect to the Socket.IO server.
             // The connection URL has the following format:
             //     http[s]://<domain>:<port>[/<namespace>]
-            var url = 'http://localhost:2000/test'
+            var url = 'http://localhost:2000/tweetycs'
             var socket = io(url);
             // Event handler for new connections.
             // The callback function is invoked when a connection with the
@@ -63,6 +63,7 @@
                 }
                 else
                     $('#ping-pong').text('∞');
+                console.log(socket)
             }, 1000);
             // Handler for the "pong" message. When the pong is received, the
             // time from the ping is stored, and the average of the last 30
