@@ -2,6 +2,7 @@ const BaseConsumer = require('./baseconsumer')
 const { preprocess } = require('../modules/preprocessors')
 const axios = require('axios')
 const nlp = require('../modules/nlp')
+const ml = require('../modules/mldrivers')
 const config = require('config')
 const keywords = config.get('keywords')
 
@@ -36,7 +37,7 @@ class TwitterConsumer extends BaseConsumer {
         tweet['analysis'] = await nlp.analyzeText(tweet.text)
 
         // Predict the labels
-        tweet['labels'] = {}
+        tweet['labels'] = await ml.analyzeTweet(tweet)
 
         // Save the tweet --- pass it to Bakjs for saving
         main.socket.emit('tweet', {data: tweet})

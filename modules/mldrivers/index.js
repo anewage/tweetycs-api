@@ -1,19 +1,19 @@
 const SampleMLAdapter = require('./sample')
 
 let adapters = []
-adapters.push(new SampleMLAdapter('sample', 'sample'))
+adapters.push(new SampleMLAdapter('MY Great Sample machine Learning Adapter', 'mladapter1'))
 
-async function analyzeText(text) {
+async function analyzeTweet(tweet) {
     let res = []
     for (let adapter of adapters) {
-        res.push(await adapter.getResponse(text))
+        res.push(await adapter.getResponse(tweet))
     }
     return res
 }
 
 
 module.exports = {
-    analyzeText: async function (text) {
-        return await analyzeText(text)
+    analyzeTweet: async function (tweet) {
+        return await analyzeTweet(tweet)
     }
 }
