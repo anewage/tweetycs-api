@@ -28,3 +28,5 @@ yarn dev # For development
 
 yarn start # For production
 ```
+# Testing
+All the tests are located inside the `__tests__` directory. Tests are being done using [jest](https://jestjs.io/docs/en/getting-started). 
