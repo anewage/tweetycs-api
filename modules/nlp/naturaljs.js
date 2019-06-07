@@ -5,8 +5,8 @@ const WordTokenizer = require('natural').WordTokenizer
 
 class NaturaljsAdapter extends Adapter{
 
-    constructor(args){
-        super(args)
+    constructor(title, id){
+        super(title, id)
         this.tokenizer = new WordTokenizer()
         this.analyzers = []
         let types = ['afinn', 'senticon', 'pattern']
@@ -19,13 +19,10 @@ class NaturaljsAdapter extends Adapter{
     }
 
     analyze(text) {
-        let analysisResult = []
+        let analysisResult = {}
         let _textInArray = this.tokenizer.tokenize(text)
         for(let obj of this.analyzers){
-            analysisResult.push({
-                type: obj.type,
-                sentiment: obj.analyzer.getSentiment(_textInArray)
-            })
+            analysisResult[obj.type] = obj.analyzer.getSentiment(_textInArray)
         }
         return analysisResult
     }
