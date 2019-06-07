@@ -3,18 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
-    "start": "node main.js",
-    "bak_dev": "bak dev",
-    "bak": "bak start"
+    "start": "node main.js"
   },
   "dependencies": {
-    "@bakjs/mongo": "^4.5.3",
     "axios": "latest",
-    "bak": "^4.7.6",
     "config": "latest",
     "http": "latest",
     "ibm-watson": "^4.1.0",
     "natural": "^0.6.3",
+    "sentiment": "^5.0.1",
     "socket.io": "latest",
     "socket.io-client": "latest",
     "twit": "^2.2.11"

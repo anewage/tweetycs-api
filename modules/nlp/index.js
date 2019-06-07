@@ -1,9 +1,11 @@
 const IBMAdapter = require('./IBM')
 const NaturalJSAdapter = require('./naturaljs')
+const SentimentJS = require('./sentiment')
 
 let adapters = []
-adapters.push(new IBMAdapter('IBM Natural Language Understanding API', 'ibm'))
-adapters.push(new NaturalJSAdapter('Natural JS Library', 'natural'))
+// adapters.push(new IBMAdapter('IBM Natural Language Understanding API', 'ibm'))
+adapters.push(new NaturalJSAdapter('Natural JS Library', 'naturaljs'))
+adapters.push(new SentimentJS('Sentiment JS Library', 'sentimentjs'))
 
 async function analyzeText(text) {
     let res = []

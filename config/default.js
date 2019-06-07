@@ -1,20 +1,17 @@
 module.exports = {
-    mongo: {
-        connections: {
-            default: {
-                uri: 'mongodb://localhost:27017/dbname'
-            }
-        }
-    },
-    twit: {
-        consumer_key: '',
-        consumer_secret: '',
-        access_token: '',
-        access_token_secret: '',
-    },
-    IBM: {
-        api_key: '',
-        url: ''
-    },
-    keywords: []
+  port: 2000,
+  bakjs: 'http://tweetycs_bak:3000/api/tweet/save',
+  namespace: '/tweetycs',
+  twit: {
+    consumer_key: '',
+    consumer_secret: '',
+    access_token: '',
+    access_token_secret: '',
+    tweet_mode: 'extended'
+  },
+  IBM: {
+    api_key: '',
+    url: ''
+  },
+  keywords: []
 }
