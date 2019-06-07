@@ -3,14 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
-    "start": "node main.js",
-    "bak_dev": "bak dev",
-    "bak": "bak start"
+    "start": "node main.js"
   },
   "dependencies": {
-    "@bakjs/mongo": "^4.5.3",
     "axios": "latest",
-    "bak": "^4.7.6",
     "config": "latest",
     "http": "latest",
     "ibm-watson": "^4.1.0",
