@@ -1,10 +1,22 @@
 # TweetSense-API
 A simple REST API for TweetSense Project
 
+# Deploy
+```bash
+# Create config file
+mv config/default.js config/local.js
+
+# Edit config file
+vim config/local.js
+ 
+# Deploy the service
+docker-compose up
+```
+
 # Config
 Please refer to [this link](https://github.com/lorenwest/node-config/wiki/Configuration-Files)
 
-# Installing the dependencies
+# Installing
 Within the project directory (root folder) issue the following command:
 ```bash
 npm install
@@ -13,20 +25,5 @@ npm install
 ```bash
 yarn
 ``` 
-
-# Deploying
-First Configure the environment variables inside `config` directory:
-```bash
-mv config/default.js local.js # Create the config file for your local deployment
-vim config/local.js # Edit the config file as you wish
-```
-Now you can deploy the API:
-```bash
-yarn # npm install -> Install the 
-
-yarn dev # For development
-
-yarn start # For production
-```
 # Testing
 All the tests are located inside the `__tests__` directory. Tests are being done using [jest](https://jestjs.io/docs/en/getting-started). 
