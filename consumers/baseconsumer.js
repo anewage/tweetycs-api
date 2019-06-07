@@ -3,7 +3,8 @@
  */
 class BaseConsumer {
     constructor () {
-        this.stream = null
+      this.stream = null
+      this.temp = []
     }
 
     /**

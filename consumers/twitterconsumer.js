@@ -40,14 +40,19 @@ class TwitterConsumer extends BaseConsumer {
         tweet['labels'] = await ml.analyzeTweet(tweet)
 
         // Save the tweet --- pass it to Bakjs for saving
+        axios.post(config.get('bakjs'), {tweet: tweet})
+            .then(response => {
+                main.socket.emit('server_response', {data: 'Tweet: ' + tweet.text})
+            })
+            .catch(err => {
+                console.log('error:', err);
+            });
+    }
+
+    storeTweet(tweet) {
+      this.temp.push(tweet)
+      if (this.temp.length > 50)
         main.socket.emit('tweet', {data: tweet})
-        // axios.post(config.get('bakjs'), {tweet: tweet})
-        //     .then(response => {
-        //         main.socket.emit('server_response', {data: 'Tweet: ' + tweet.text})
-        //     })
-        //     .catch(err => {
-        //         console.log('error:', err);
-        //     });
     }
 
 }
