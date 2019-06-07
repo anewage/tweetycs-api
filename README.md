@@ -1,5 +1,5 @@
-# TweetSense-API
-A simple REST API for TweetSense Project
+# tweetycs-api
+A simple REST API for tweetycs Project
 
 # Deploy
 ```bash
