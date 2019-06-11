@@ -8,12 +8,10 @@ const MLPAdapter = require('./mlp')
 let adapters = []
 adapters.push(new LSTMAdapter('Long Short-Term Memory Model', 'LSTM'))
 adapters.push(new CNNdapter('Convolutional Neural Network Model', 'CNN'))
-...
-adapters.push(new CNNdapter('MY Great Sample machine Learning Adapter', 'mladapter2'))
-adapters.push(new SVMdapter('MY Great Sample machine Learning Adapter', 'mladapter3'))
-adapters.push(new KNNdapter('MY Great Sample machine Learning Adapter', 'mladapter4'))
-adapters.push(new RFdapter('MY Great Sample machine Learning Adapter', 'mladapter5'))
-adapters.push(new MLPdapter('MY Great Sample machine Learning Adapter', 'mladapter6'))
+adapters.push(new SVMdapter('Support Vector Machine', 'SVM'))
+adapters.push(new KNNdapter('K-nearest Neighbors', 'KNN'))
+adapters.push(new RFdapter('Random Forests', 'RF'))
+adapters.push(new MLPdapter('Multilayer Perceptron', 'MLP'))
 
 async function analyzeTweet(tweet) {
     let res = []
