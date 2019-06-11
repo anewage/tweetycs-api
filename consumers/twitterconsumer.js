@@ -51,6 +51,7 @@ class TwitterConsumer extends BaseConsumer {
     }
 
     storeTweet(tweet) {
+      // Stupid code
       main.socket.emit('tweet', {data: tweet})
       // this.temp.push(tweet)
       // if (this.temp.length > 50){
