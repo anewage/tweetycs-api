@@ -19,6 +19,7 @@
     "twit": "^2.2.11"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.4.5",
     "jest": "^24.8.0",
     "nodemon": "latest",
     "eslint": "^5.16.0",

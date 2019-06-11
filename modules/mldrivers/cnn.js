@@ -12,14 +12,20 @@ class CNNAdapter extends Driver{
      }).then(function (response1){
         // response = JSON.parse(response)
        return response1.data
-     })
+     }).catch(err => {
+      // console.log('error:', err);
+    })
 
     let res2 = await axios.post(url2, {
        'user':user
      }).then(function (response2){
        // response2 = JSON.parse(response)
        return response2.data
-     })
+     }).catch(err => {
+      // console.log('error:', err);
+    });
+
+    console.log('cnn done!')
 
      var res = {
       "theme":res1["theme"],

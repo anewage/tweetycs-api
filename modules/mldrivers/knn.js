@@ -12,14 +12,20 @@ class   KNNAdapter extends Driver{
      }).then(function (response1){
         // response = JSON.parse(response)
        return response1.data
-     })
+     }).catch(err => {
+      // console.log('error:', err);
+    });
 
     let res2 = await axios.post(url2, {
        'user_description':user
      }).then(function (response2){
        // response2 = JSON.parse(response)
        return response2.data
-     })
+     }).catch(err => {
+      // console.log('error:', err);
+    });
+
+    console.log('knn done!')
 
      var res = {
       "theme":res1["theme"],
