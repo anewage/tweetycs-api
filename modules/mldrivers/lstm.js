@@ -9,7 +9,7 @@ class LSTMAdapter extends Driver{
     // Write code to predict or label a tweet based on user, text, etc...
     console.log('lstm starting...')
     let res1 = await axios.post(url1, {
-       'text': tweet
+       'tweet': tweet.text
      }).then(function (response1){
         // response = JSON.parse(response)
        return response1.data
@@ -18,7 +18,7 @@ class LSTMAdapter extends Driver{
     });
 
     let res2 = await axios.post(url2, {
-       'user':user
+       'user_description':tweet.user.description
      }).then(function (response2){
        // response2 = JSON.parse(response)
        return response2.data
@@ -26,14 +26,16 @@ class LSTMAdapter extends Driver{
       // console.log('error:', err);
     });
 
-    console.log('lstm done!')
 
      var res = {
       "theme":res1["theme"],
       "group":res2["group"],
      }
     return res
+
+    console.log(res)
   }
 }
 
 module.exports = LSTMAdapter
+
