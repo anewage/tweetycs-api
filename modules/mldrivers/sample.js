@@ -4,6 +4,8 @@ const url = 'http://localhost:5000/svmuser'
 
 class SampleMLAdapter extends Driver{
   async predict(tweet) {
+    const userCategories = ['Public', 'Interest Groups', 'Businesses', 'Media', 'Celebrities', 'Official Agencies']
+    const contentThemes = ['Educational', 'Personal', 'Promotional', 'Fundraising']
     // Write code to predict or label a tweet based on user, text, etc...
     // let res = await axios.post(url, {
     //   tweet: tweet
@@ -21,9 +23,10 @@ class SampleMLAdapter extends Driver{
      *  }
      */
     let res = {
-      hi: 'hello'
+      userCategory: userCategories[Math.floor(Math.random() * 6)],
+      contentTheme: contentThemes[Math.floor(Math.random() * 4)]
     }
-    return res
+    return Promise.resolve(res)
   }
 }
 
