@@ -6,7 +6,9 @@ const RFAdapter = require('./rf')
 const MLPAdapter = require('./mlp')
 
 let adapters = []
-adapters.push(new LSTMAdapter('MY Great Sample machine Learning Adapter', 'mladapter1'))
+adapters.push(new LSTMAdapter('Long Short-Term Memory Model', 'LSTM'))
+adapters.push(new CNNdapter('Convolutional Neural Network Model', 'CNN'))
+...
 adapters.push(new CNNdapter('MY Great Sample machine Learning Adapter', 'mladapter2'))
 adapters.push(new SVMdapter('MY Great Sample machine Learning Adapter', 'mladapter3'))
 adapters.push(new KNNdapter('MY Great Sample machine Learning Adapter', 'mladapter4'))
