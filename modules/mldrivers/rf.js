@@ -8,7 +8,7 @@ class   RFAdapter extends Driver{
   async predict(tweet,user) {
     // Write code to predict or label a tweet based on user, text, etc...
     let res1 = await axios.post(url1, {
-       'tweet': tweet
+       'tweet': tweet.text
      }).then(function (response1){
         // response = JSON.parse(response)
        return response1.data
@@ -17,7 +17,7 @@ class   RFAdapter extends Driver{
     });
 
     let res2 = await axios.post(url2, {
-       'user_description':user
+       'user_description':tweet.user.description
      }).then(function (response2){
        // response2 = JSON.parse(response)
        return response2.data
@@ -29,6 +29,7 @@ class   RFAdapter extends Driver{
       "theme":res1["theme"],
       "group":res2["group"],
      }
+    console.log(res)
     return res
   }
 }
