@@ -4,20 +4,29 @@ const axios = require('axios')
 const nlp = require('../modules/nlp')
 const ml = require('../modules/mldrivers')
 const config = require('config')
-const keywords = config.get('keywords')
+const channels = config.get('channels')
 
 let main = require('../main')
-let Twit = require('twit')
-let T = new Twit(config.get('twit'))
+let TwitterStreamChannels = require('twitter-stream-channels')
+let T = new TwitterStreamChannels(config.get('twit'))
 
 class TwitterConsumer extends BaseConsumer {
+
+    constructor() {
+      super()
+      this.channels = {}
+      const that = this
+      Object.keys(channels).map(function(key, index) {
+        that.channels[key] = channels[key].keywords
+      });
+    }
 
     consume() {
         if (this.stream)
             this.stream.start()
         else
-            this.stream = T.stream('statuses/filter', {track: keywords, language: 'en'})
-                .on('tweet', tweet => this.handleTweet(tweet))
+            this.stream = T.streamChannels({track: this.channels, language: 'en'})
+                .on('channels', tweet => this.handleTweet(tweet))
         return this.stream
     }
 
@@ -30,6 +39,7 @@ class TwitterConsumer extends BaseConsumer {
     async handleTweet(tweet) {
         const that = this
         // Pre-process the tweet
+        tweet['cause_factors'] = Object.assign({}, tweet.$channels)
         if (tweet.extended_tweet)
             tweet.text = tweet.extended_tweet.full_text
         tweet.text = preprocess(tweet.text)[0]
@@ -40,6 +50,7 @@ class TwitterConsumer extends BaseConsumer {
         // Predict the labels
         tweet['labels'] = await ml.analyzeTweet(tweet)
 
+        main.socket.emit('tweet', {data: tweet})
         // Save the tweet --- pass it to Bakjs for saving
         axios.post(config.get('bakjs'), {tweet: tweet})
             .then(response => {
