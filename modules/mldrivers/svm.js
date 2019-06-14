@@ -28,14 +28,10 @@ class   SVMAdapter extends Driver{
       console.log('error:', err);
     });
 
-     
-
-     var res = {
-      "theme":res1["theme"],
-      "group":res2["group"],
-     }
-    console.log(res);
-    return res
+    return {
+      theme: res1['theme'],
+      group: res2['group'],
+    }
   }
 }
 
