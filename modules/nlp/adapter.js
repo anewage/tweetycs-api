@@ -10,11 +10,11 @@ class Adapter {
     // Driver Function
     async getResponse(text) {
         let resp = await this.analyze(text)
-        return {
-            id: this.id,
-            title: this.title,
-            result: resp
-        }
+        return Promise.resolve({
+          id: this.id,
+          title: this.title,
+          result: resp
+        })
     }
 }
 
