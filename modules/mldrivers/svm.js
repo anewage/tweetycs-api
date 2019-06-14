@@ -8,8 +8,6 @@ class   SVMAdapter extends Driver{
   async predict(tweet,user) {
     // Write code to predict or label a tweet based on user, text, etc...
 
-    console.log("svm start");
-
     let res1 = await axios.post(url1, {
        'tweet': tweet.text
      }).then(function (response1){

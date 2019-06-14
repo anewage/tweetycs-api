@@ -6,8 +6,6 @@ const url2 = 'http://localhost:33507/lstmuser'
 
 class LSTMAdapter extends Driver{
   async predict(tweet,user) {
-    // Write code to predict or label a tweet based on user, text, etc...
-    console.log('lstm starting...')
     let res1 = await axios.post(url1, {
        'tweet': tweet.text
      }).then(function (response1){
@@ -27,13 +25,10 @@ class LSTMAdapter extends Driver{
     });
 
 
-     var res = {
-      "theme":res1["theme"],
-      "group":res2["group"],
-     }
-    return res
-
-    console.log(res)
+    return {
+      theme: res1['theme'],
+      group: res2['group'],
+    }
   }
 }
 
