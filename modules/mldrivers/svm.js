@@ -11,7 +11,6 @@ class   SVMAdapter extends Driver{
     let res1 = await axios.post(url1, {
        'tweet': tweet.text
      }).then(function (response1){
-        // response = JSON.parse(response)
        return response1.data
      }).catch(err => {
       console.log('error:', err);
@@ -20,7 +19,6 @@ class   SVMAdapter extends Driver{
     let res2 = await axios.post(url2, {
        'user_description':tweet.user.description
      }).then(function (response2){
-       // response2 = JSON.parse(response)
        return response2.data
      }).catch(err => {
       console.log('error:', err);
