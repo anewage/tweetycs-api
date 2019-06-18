@@ -22,11 +22,13 @@ class TwitterConsumer extends BaseConsumer {
     }
 
     consume() {
+      console.log('starting to consume')
         if (this.stream)
             this.stream.start()
         else
             this.stream = T.streamChannels({track: this.channels, language: 'en'})
                 .on('channels', tweet => this.handleTweet(tweet))
+        console.log('streamer set!')
         return this.stream
     }
 
@@ -65,18 +67,28 @@ class TwitterConsumer extends BaseConsumer {
     async storeData(tweet) {
       this.temp.push(tweet)
       if (this.temp.length > 20){
-        await axios.get(config.get('bakjs').getAggregateData)
+        const aggregateUsers = await axios.get(config.get('bakjs').getAggregateUsers)
           .then(response => {
-            main.socket.emit('bulk-update', {
-              tweets: this.temp,
-              aggregate: response.data
-            })
-            console.log('DONE!')
+            return response.data.user_groups
           })
           .catch(err => {
             console.log('error:', err);
             return false
           })
+
+        const aggregateTopics = await axios.get(config.get('bakjs').getAggregateTopics)
+          .then(response => {
+            return response.data
+          })
+          .catch(err => {
+            console.log('error:', err);
+            return false
+          })
+        main.socket.emit('bulk-update', {
+          // tweets: this.temp,
+          aggregatedTopics: aggregateTopics,
+          aggregatedUsers: aggregateUsers
+        })
         this.temp = []
       }
     }
