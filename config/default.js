@@ -1,6 +1,9 @@
 module.exports = {
   port: 2000,
-  bakjs: 'http://tweetycs_bak:3000/api/tweet/save',
+  bakjs: {
+    saveTweet: 'http://localhost:3000/api/tweet/save',
+    getAggregateData: 'http://localhost:3000/api/aggregate'
+  },
   namespace: '/tweetycs',
   twit: {
     consumer_key: '',

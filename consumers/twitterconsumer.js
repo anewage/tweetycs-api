@@ -39,7 +39,8 @@ class TwitterConsumer extends BaseConsumer {
     async handleTweet(tweet) {
         const that = this
         // Pre-process the tweet
-        tweet['cause_factors'] = Object.assign({}, tweet.$channels)
+        tweet['topics'] = Object.assign({}, tweet.$channels)
+        tweet['keywords'] = [...tweet.$keywords]
         if (tweet.extended_tweet)
             tweet.text = tweet.extended_tweet.full_text
         tweet.text = preprocess(tweet.text)[0]
@@ -51,19 +52,31 @@ class TwitterConsumer extends BaseConsumer {
         tweet['labels'] = await ml.analyzeTweet(tweet)
 
         // Save the tweet --- pass it to Bakjs for saving
-        axios.post(config.get('bakjs'), {tweet: tweet})
+        axios.post(config.get('bakjs').saveTweet, {tweet: tweet})
             .then(response => {
-                that.storeTweet(tweet)
+              that.storeData(tweet)
             })
             .catch(err => {
                 console.log('error:', err);
+                return false
             });
     }
 
-    storeTweet(tweet) {
+    async storeData(tweet) {
       this.temp.push(tweet)
-      if (this.temp.length > 50){
-        main.socket.emit('tweet-bulk', {data: this.temp})
+      if (this.temp.length > 20){
+        await axios.get(config.get('bakjs').getAggregateData)
+          .then(response => {
+            main.socket.emit('bulk-update', {
+              tweets: this.temp,
+              aggregate: response.data
+            })
+            console.log('DONE!')
+          })
+          .catch(err => {
+            console.log('error:', err);
+            return false
+          })
         this.temp = []
       }
     }
