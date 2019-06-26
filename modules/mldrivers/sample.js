@@ -1,6 +1,4 @@
-const axios = require('axios')
 const Driver = require('./driver')
-const url = 'http://localhost:5000/svmuser'
 
 class SampleMLAdapter extends Driver{
   async predict(tweet) {
