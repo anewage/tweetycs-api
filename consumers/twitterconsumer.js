@@ -22,13 +22,11 @@ class TwitterConsumer extends BaseConsumer {
     }
 
     consume() {
-      console.log('starting to consume')
         if (this.stream)
             this.stream.start()
         else
             this.stream = T.streamChannels({track: this.channels, language: 'en'})
                 .on('channels', tweet => this.handleTweet(tweet))
-        console.log('streamer set!')
         return this.stream
     }
 
@@ -40,6 +38,9 @@ class TwitterConsumer extends BaseConsumer {
 
     async handleTweet(tweet) {
         const that = this
+        // Discard the tweet if it does not include any keywords
+        if (Object.keys(tweet.$channels).length === 0) return
+
         // Pre-process the tweet
         tweet['topics'] = Object.assign({}, tweet.$channels)
         tweet['keywords'] = [...tweet.$keywords]
@@ -56,7 +57,7 @@ class TwitterConsumer extends BaseConsumer {
         // Save the tweet --- pass it to Bakjs for saving
         axios.post(config.get('bakjs').saveTweet, {tweet: tweet})
             .then(response => {
-              that.storeData(tweet)
+              that.submitData(tweet)
             })
             .catch(err => {
                 console.log('error:', err);
@@ -64,9 +65,13 @@ class TwitterConsumer extends BaseConsumer {
             });
     }
 
-    async storeData(tweet) {
+    async submitData(tweet) {
+      // Store tweet temporarily
       this.temp.push(tweet)
+
+      // Limit is now 20
       if (this.temp.length > 20){
+        // Get Aggregated Users from bakjs
         const aggregateUsers = await axios.get(config.get('bakjs').getAggregateUsers)
           .then(response => {
             return response.data.user_groups
@@ -76,6 +81,7 @@ class TwitterConsumer extends BaseConsumer {
             return false
           })
 
+        // Get Aggregated Topics from bakjs
         const aggregateTopics = await axios.get(config.get('bakjs').getAggregateTopics)
           .then(response => {
             return response.data
@@ -84,11 +90,26 @@ class TwitterConsumer extends BaseConsumer {
             console.log('error:', err);
             return false
           })
+
+        // Get Aggregated Keywords from bakjs
+        const aggregateKeywords = await axios.get(config.get('bakjs').getAggregateKeywords)
+          .then(response => {
+            return response.data
+          })
+          .catch(err => {
+            console.log('error:', err);
+            return false
+          })
+
+        // Emit the results to clients
         main.socket.emit('bulk-update', {
-          // tweets: this.temp,
+          topics: channels,
           aggregatedTopics: aggregateTopics,
-          aggregatedUsers: aggregateUsers
+          aggregatedUsers: aggregateUsers,
+          aggregatedKeywords: aggregateKeywords
         })
+
+        // Empty temp storage
         this.temp = []
       }
     }
