@@ -19,7 +19,7 @@ let app = require('http').createServer(handler)
 let io = require('socket.io')(app);
 
 // Start the server on the specified port
-let PORT = config.port || 2000
+let PORT = process.env.PORT || 3000
 app.listen(PORT);
 
 // Listen to events on the specified namespace
