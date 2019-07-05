@@ -1,21 +1,30 @@
-const IBMAdapter = require('./IBM')
-const NaturalJSAdapter = require('./naturaljs')
+const LSTMAdapter = require('./lstm')
+const CNNAdapter = require('./cnn')
+const SVMAdapter = require('./svm')
+const KNNAdapter = require('./knn')
+const RFAdapter = require('./rf')
+const MLPAdapter = require('./mlp')
 
 let adapters = []
-adapters.push(new IBMAdapter('IBM Natural Language Understanding API', 'ibm'))
-adapters.push(new NaturalJSAdapter('Natural JS Library', 'natural'))
+adapters.push(new LSTMAdapter('Long Short-Term Memory Model', 'LSTM'))
+adapters.push(new CNNAdapter('Convolutional Neural Network Model', 'CNN'))
+adapters.push(new SVMAdapter('Support Vector Machine', 'SVM'))
+adapters.push(new KNNAdapter('K-nearest Neighbors', 'KNN'))
+adapters.push(new RFAdapter('Random Forests', 'RF'))
+adapters.push(new MLPAdapter('Multilayer Perceptron', 'MLP'))
 
-async function analyzeText(text) {
+async function analyzeTweet(tweet) {
     let res = []
     for (let adapter of adapters) {
-        res.push(await adapter.getResponse(text))
+        res.push(await adapter.getResponse(tweet))
     }
     return res
 }
 
 
 module.exports = {
-    analyzeText: async function (text) {
-        return await analyzeText(text)
+    analyzeTweet: async function (tweet) {
+        return await analyzeTweet(tweet)
     }
 }
+
