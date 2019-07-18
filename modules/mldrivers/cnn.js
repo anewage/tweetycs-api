@@ -1,7 +1,8 @@
 const axios = require('axios')
 const Driver = require('./driver')
-const url1 = 'http://localhost:33507/cnntweet'
-const url2 = 'http://localhost:33507/cnnuser'
+const config = require('config')
+const url1 = config.flask.dlapp_uri + 'cnntweet'
+const url2 = config.flask.dlapp_uri + 'cnnuser'
 
 
 class CNNAdapter extends Driver{

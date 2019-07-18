@@ -1,7 +1,8 @@
 const axios = require('axios')
 const Driver = require('./driver')
-const url1 = 'http://localhost:33508/svmtweet'
- const url2 = 'http://localhost:33508/svmuser'
+const config = require('config')
+const url1 = config.flask.mlapp_uri + 'svmtweet'
+const url2 = config.flask.mlapp_uri + 'svmuser'
 
 
 class   SVMAdapter extends Driver{

@@ -1,7 +1,8 @@
 const axios = require('axios')
 const Driver = require('./driver')
-const url1 = 'http://localhost:33508/rftweet'
- const url2 = 'http://localhost:33508/rfuser'
+const config = require('config')
+const url1 = config.flask.mlapp_uri + 'rftweet'
+const url2 = config.flask.mlapp_uri + 'rfuser'
 
 
 class   RFAdapter extends Driver{
