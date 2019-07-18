@@ -1,12 +1,14 @@
 const config = require('config')
 const routeRegistrar = require('./lib/routeregistrar')
 const streamRegistrar = require('./lib/streamregistrar')
+const logger = require('./plugins/log')
 
 function handler (req, res) {
     fs.readFile(__dirname + '/index.html',
         function (err, data) {
             if (err) {
                 res.writeHead(500);
+                logger('Error loading index.html')
                 return res.end('Error loading index.html');
             }
 

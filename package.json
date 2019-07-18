@@ -17,7 +17,8 @@
     "socket.io": "latest",
     "socket.io-client": "latest",
     "twit": "^2.2.11",
-    "twitter-stream-channels": "^1.0.1"
+    "twitter-stream-channels": "^1.0.1",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",

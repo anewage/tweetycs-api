@@ -7,5 +7,5 @@ node_modules
 # Local Config File
 config/local.js
 
-# Yarn
+# Yarn and other log files
 *.log

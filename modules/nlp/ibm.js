@@ -1,4 +1,5 @@
 const Adapter = require('./adapter')
+const logger = require('../../plugins/log')
 const config = require('config')
 const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
 const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
@@ -49,7 +50,7 @@ class IBMAdapter extends Adapter{
                 return analysisResults
             })
             .catch(err => {
-                console.log('error:', err);
+                logger.error('error:', err);
                 return {}
             });
     }

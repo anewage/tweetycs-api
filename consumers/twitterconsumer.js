@@ -5,6 +5,7 @@ const nlp = require('../modules/nlp')
 const ml = require('../modules/mldrivers')
 const config = require('config')
 const channels = config.get('channels')
+const logger = require('../plugins/log')
 
 let main = require('../main')
 let TwitterStreamChannels = require('twitter-stream-channels')
@@ -27,12 +28,14 @@ class TwitterConsumer extends BaseConsumer {
         else
             this.stream = T.streamChannels({track: this.channels, language: 'en'})
                 .on('channels', tweet => this.handleTweet(tweet))
+        logger.info('Consuming twitter feed has started...')
         return this.stream
     }
 
     pauseConsuming() {
         if (this.stream)
             this.stream.stop()
+        logger.info('Consuming twitter feed has stopped')
         return true
     }
 
@@ -60,7 +63,7 @@ class TwitterConsumer extends BaseConsumer {
               that.submitData(tweet)
             })
             .catch(err => {
-                console.log('error:', err);
+                logger.error('error:', err);
                 return false
             });
     }
@@ -77,7 +80,7 @@ class TwitterConsumer extends BaseConsumer {
             return response.data.user_groups
           })
           .catch(err => {
-            console.log('error:', err);
+            logger.error('error:', err);
             return false
           })
 
@@ -87,7 +90,7 @@ class TwitterConsumer extends BaseConsumer {
             return response.data
           })
           .catch(err => {
-            console.log('error:', err);
+            logger.error('error:', err);
             return false
           })
 
@@ -97,7 +100,7 @@ class TwitterConsumer extends BaseConsumer {
             return response.data
           })
           .catch(err => {
-            console.log('error:', err);
+            logger.error('error:', err);
             return false
           })
 
