@@ -8,6 +8,10 @@ class EventController {
         this.socket = socket
     }
 
+    setSocket(socket) {
+      this.socket = socket
+    }
+
     /**
      * Routes that the controller responds to
      */

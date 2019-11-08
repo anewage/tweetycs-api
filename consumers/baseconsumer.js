@@ -1,8 +1,11 @@
+const Controller = require('../controllers/controller')
+
 /**
  * Generic Stream Consumer - Event Handler
  */
-class BaseConsumer {
-    constructor () {
+class BaseConsumer extends Controller{
+    constructor (socket) {
+      super(socket);
       this.stream = null
       this.temp = []
     }

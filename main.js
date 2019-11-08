@@ -29,9 +29,8 @@ app.listen(PORT);
 let NAMESPACE = config.namespace || '/'
 const nameSpace = io.of(NAMESPACE).on('connection', routeRegistrar)
 
-// Start consuming the streams
-streamRegistrar()
-
-
 module.exports.app = app
 module.exports.socket = nameSpace
+
+// Start consuming the streams
+streamRegistrar()
