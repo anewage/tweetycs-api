@@ -4,6 +4,7 @@ const SVMAdapter = require('./svm')
 const KNNAdapter = require('./knn')
 const RFAdapter = require('./rf')
 const MLPAdapter = require('./mlp')
+const predictCustomLabels = require('./custom')
 
 let adapters = []
 adapters.push(new LSTMAdapter('Long Short-Term Memory Model', 'LSTM'))
@@ -18,6 +19,9 @@ async function analyzeTweet(tweet) {
     for (let adapter of adapters) {
         res.push(await adapter.getResponse(tweet))
     }
+    const customLabel = await predictCustomLabels(res)
+    if (customLabel.valid)
+      res.push(customLabel)
     return res
 }
 
