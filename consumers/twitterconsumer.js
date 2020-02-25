@@ -107,8 +107,8 @@ class TwitterConsumer extends BaseConsumer {
       // Get windowed tweets from bakjs
       const windowedTweets = await axios.get(config.get('bakjs').getTweets, {
         params: {
-          from: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).getTime(), // Yesterday this time
-          to: new Date(new Date().getTime() + 1 * 5 * 60 * 1000).getTime() // 5 minutes from now
+          from: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000).getTime(), // Yesterday this time
+          to: new Date(new Date().getTime() + 7 * 5 * 60 * 1000).getTime() // 5 minutes from now
         }
       })
         .then(response => {
@@ -189,7 +189,7 @@ class TwitterConsumer extends BaseConsumer {
 
       console.log('temp has:' + this.temp.length)
       // Limit is now 20
-      if (this.temp.length > 20){
+      if (this.temp.length > 10){
         // Get Aggregated Users from bakjs
         const aggregateUsers = await axios.get(config.get('bakjs').getAggregateUsers)
           .then(response => {
