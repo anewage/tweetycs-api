@@ -35,9 +35,7 @@ let analyzeParams = {
             entities: true
         },
         sentiment: {
-            targets: [
-                'health'
-            ]
+          document: true
         }
     },
 };
@@ -54,6 +52,17 @@ class IBMAdapter extends Adapter{
                 return {}
             });
     }
+
+  // Override
+  async getResponse(text) {
+    let resp = await this.analyze(text)
+    return Promise.resolve({
+      id: this.id,
+      title: this.title,
+      result: resp.sentiment.document.score,
+      meta: resp
+    })
+  }
 }
 
 module.exports = IBMAdapter

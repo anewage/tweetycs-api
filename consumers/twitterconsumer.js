@@ -4,7 +4,7 @@ const axios = require('axios')
 const nlp = require('../modules/nlp')
 const ml = require('../modules/mldrivers')
 const config = require('config')
-const channels = config.get('channels')
+// const channels = config.get('channels')
 const logger = require('../plugins/log')
 
 // let main = require('../main')
@@ -20,6 +20,7 @@ class TwitterConsumer extends BaseConsumer {
 
     routes () {
       this.socket.on('update_channels', data => { this.updateChannels(data) })
+      this.socket.on('pause_consuming', data => { this.pauseConsuming() })
       this.socket.on('topics_request', data => { this.ackTopics(data) })
       this.socket.on('initial_data_request', data => { this.sendInitials(data) })
       this.socket.on('update_labeling', data => { this.updateCustomLabels(data) })
@@ -27,10 +28,10 @@ class TwitterConsumer extends BaseConsumer {
 
     consume(chans) {
         console.log('starting to consume...')
-        if (!chans)
-          this.channels = this.channelsToObject(channels)
-        else
-          this.channels = this.channelsToObject(chans)
+        // if (!chans)
+        //   this.channels = this.channelsToObject(channels)
+        // else
+        this.channels = this.channelsToObject(chans)
         this.stream = T.streamChannels({track: this.channels, language: 'en'})
           .on('channels', tweet => this.handleTweet(tweet))
         logger.info('Consuming twitter feed has started...')
@@ -118,11 +119,10 @@ class TwitterConsumer extends BaseConsumer {
           return []
         })
 
-      console.log('sending initials with ' + windowedTweets.length + ' tweets...')
-
+      console.log(this.channels)
       // Emit the results to clients
       this.socket.emit('bulk-update', {
-        topics: channels,
+        topics: this.channelsToArray(this.channels),
         aggregatedTopics: aggregateTopics,
         aggregatedUsers: aggregateUsers,
         aggregatedKeywords: aggregateKeywords,
@@ -131,11 +131,11 @@ class TwitterConsumer extends BaseConsumer {
     }
 
     updateCustomLabels(data) {
-      console.log('###>>>>>>>> got data', data)
       axios.post(config.get('bakjs').updateLabeling, {
         labels: data.tweet.labels,
         custom_theme: data.theme,
-        custom_group: data.group
+        custom_group: data.group,
+        tweet: data.tweet
       })
         .then(response => {
           return true
@@ -187,7 +187,7 @@ class TwitterConsumer extends BaseConsumer {
       // Store tweet temporarily
       this.temp.push(tweet)
 
-      console.log(this.temp.length)
+      console.log('temp has:' + this.temp.length)
       // Limit is now 20
       if (this.temp.length > 20){
         // Get Aggregated Users from bakjs
@@ -219,10 +219,10 @@ class TwitterConsumer extends BaseConsumer {
             logger.error('error:', err);
             return false
           })
-
+        console.log(this.channels)
         // Emit the results to clients
         this.socket.emit('bulk-update', {
-          topics: channels,
+          topics: this.channelsToArray(this.channels),
           aggregatedTopics: aggregateTopics,
           aggregatedUsers: aggregateUsers,
           aggregatedKeywords: aggregateKeywords,
